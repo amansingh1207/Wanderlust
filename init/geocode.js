@@ -1,8 +1,8 @@
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config();
 const mongoose = require("mongoose");
 const Listing = require("../models/listing.js");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+const MONGO_URL = "mongodb+srv://Aman_Singh:Aman2006@cluster0.tn5mi3p.mongodb.net/wanderlust?appName=Cluster0";
 
 async function geocode(location, country) {
     const query = encodeURIComponent(`${location}, ${country}`);
