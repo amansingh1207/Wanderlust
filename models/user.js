@@ -4,12 +4,18 @@ const passportLocalMongoose = require("passport-local-mongoose");
 
 const userSchema = new Schema({
     email: {
-        type:String,
-        required:true,
+        type: String,
+        required: true,
+        unique: true,
+    },
+    username: {
+        type: String,
+        required: true,
     }
 });
 
-userSchema.plugin(passportLocalMongoose);//This line of code does salting hashing and saving the data in db
+// usernameField: 'email' → login with email instead of username
+userSchema.plugin(passportLocalMongoose, { usernameField: "email" });
 module.exports = mongoose.model('User', userSchema);
 
 

@@ -2,8 +2,6 @@ if (process.env.NODE_ENV != "production") {
     require('dotenv').config();
 }
 
-console.log(process.env.CLOUD_NAME);
-
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -54,7 +52,7 @@ app.use(flash());
 // Passport config
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
+passport.use(new LocalStrategy({ usernameField: "email" }, User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
@@ -67,29 +65,18 @@ app.use((req, res, next) => {
     next();
 });
 
+// Root redirect
+app.get("/", (req, res) => res.redirect("/listings"));
+
 // Routes
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
-app.use("/", userRouter);  // if you have user routes
+app.use("/", userRouter);
 
-// Demo route
-// app.get("/demouser", async (req, res) => {
-//     let fakeUser = new User({
-//         email: "student@gmail.com",
-//         username: "Gaurav Rathore"
-//     });
-//     let registeredUser = await User.register(fakeUser, "helloworld");
-//     res.send(registeredUser);
-// });
-
-// app.get("/", (req, res) => {
-//     res.send("Hi, I am root");
-// })
-
-// // 404 handler
-// app.all("*", (req, res, next) => {
-//     next(new ExpressError(404, "Page not found"));
-// });
+// 404 handler
+app.all("*", (req, res, next) => {
+    next(new ExpressError(404, "Page not found"));
+});
 
 // Error handler
 app.use((err, req, res, next) => {

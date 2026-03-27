@@ -71,9 +71,11 @@
             <h5 class="card-title">@<%= review.author.username %></h5>
             <p class="starability-result card-text" data-rating="<%=review.rating%>"></p>
             <p class="card-text"><%= review.comment %></p>
-            <form class="mb-3" method="POST" action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE">
-              <button class="btn btn-sm btn-dark">Delete</button>
-            </form>
+            <% if (currUser && currUser._id.equals(review.author._id)) { %>
+              <form class="mb-3" method="POST" action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE">
+                <button class="btn btn-sm btn-dark">Delete</button>
+              </form>
+            <% } %>
           </div>
         </div>
       <% } %>
@@ -81,13 +83,41 @@
 
   </div>
   <% } %>
-    <!-- <div class="col-8 offset-2 mb-3">
-      <h3>Where you'll be</h3>
-      <div id="map">
-      </div>
-       -->
-    </div>
+  <div class="col-8 offset-2 mb-5">
+    <h3>Where you'll be</h3>
+    <p class="text-muted"><%= listing.location %>, <%= listing.country %></p>
+    <div id="map" style="width: 100%; height: 400px; border-radius: 10px;"></div>
+  </div>
 </div>
+
+<link rel="stylesheet" href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css" />
+<script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.min.js"></script>
+<script>
+  const coordinates = <%- JSON.stringify(listing.geometry ? listing.geometry.coordinates : null) %>;
+  const mapApiKey = "<%= mapApiKey %>";
+
+  if (coordinates && coordinates.length === 2) {
+    maptilersdk.config.apiKey = mapApiKey;
+    const map = new maptilersdk.Map({
+      container: "map",
+      style: maptilersdk.MapStyle.STREETS,
+      center: coordinates,
+      zoom: 10,
+    });
+
+    const popup = new maptilersdk.Popup({ offset: 25 }).setHTML(
+      `<b><%= listing.title %></b><br><%= listing.location %>`
+    );
+
+    new maptilersdk.Marker({ color: "#fe424d" })
+      .setLngLat(coordinates)
+      .setPopup(popup)
+      .addTo(map);
+  } else {
+    document.getElementById("map").innerHTML =
+      '<p class="text-muted p-3">Map not available for this listing.</p>';
+  }
+</script>
 
 
 

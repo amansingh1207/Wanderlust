@@ -114,8 +114,31 @@ body {
 
 
 
-/* Maps
+/* Search bar */
+.search-form {
+    width: 35%;
+}
+
+.search-input {
+    border-radius: 2rem 0 0 2rem !important;
+    border: 1.5px solid #ddd !important;
+}
+
+.search-input:focus {
+    border-color: #fe424d !important;
+    box-shadow: none !important;
+}
+
+.search-btn {
+    background-color: #fe424d !important;
+    color: white !important;
+    border-radius: 0 2rem 2rem 0 !important;
+    border: 1.5px solid #fe424d !important;
+}
+
+/* Map */
 #map {
-    height: 350px;
-    width: 90vh;
-} */
+    height: 400px;
+    width: 100%;
+    border-radius: 10px;
+}
