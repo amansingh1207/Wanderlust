@@ -2,6 +2,8 @@
 
 A full-stack Airbnb-like travel listing web app built with Node.js, Express, MongoDB, and EJS.
 
+**Live:** https://wanderlust-ulcp.onrender.com *(free-tier Render — first load can take ~a minute)*
+
 ## Tech Stack
 
 - **Backend:** Node.js + Express.js
@@ -84,3 +86,7 @@ init/               # DB seed scripts
 - **Listing:** title, description, price, location, country, image (url+filename), owner (ref User), reviews (ref Review[])
 - **Review:** comment, rating (1-5), createdAt, author (ref User)
 - **User:** username, email (+ password hashing via passport-local-mongoose)
+
+## Author
+
+[Aman Singh](https://github.com/amansingh1207) — B.Tech CSE, Sitare University.
